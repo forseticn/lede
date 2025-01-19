@@ -5,8 +5,9 @@ sed -i 's/192.168.1.1/10.0.0.3/g' package/base-files/luci2/bin/config_generate
 sed -i 's/$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.//g' package/lean/default-settings/files/zzz-default-settings
 
 # 安装新的argon
-# rm -rf feeds/luci/themes/luci-theme-argon
-# git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon package/luci-theme-argon
+rm -rf feeds/luci/themes/luci-theme-argon
+git clone -b master https://github.com/jerrykuku/luci-theme-argon.git feeds/luci/themes/luci-theme-argon
+
 
 # 修改文本
 # sed -i 's/"带宽监控"/"宽带"/g' `grep "带宽监控" -rl ./`
