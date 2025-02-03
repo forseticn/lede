@@ -20,9 +20,5 @@ sed -i 's|admin\\|admin\\/services\\|g' feeds/luci/applications/luci-app-dockerm
 # 调整 x86 型号只显示 CPU 型号
 sed -i 's/${g}.*/${a}${b}${c}${d}${e}${f}${hydrid}/g' package/lean/autocore/files/x8
 
-# 修改文本
-# sed -i 's/"带宽监控"/"宽带"/g' `grep "带宽监控" -rl ./`
-# sed -i 's/"Turbo ACC 网络加速"/"Turbo ACC"/g' package/feeds/luci/luci-app-turboacc/po/*/turboacc.po       # `grep "Turbo ACC 网络加速" -rl ./`
-
 ./scripts/feeds update -a
 ./scripts/feeds install -a
