@@ -13,8 +13,5 @@ sed -i 's/"admin"/"admin", "services"/g; s/admin\//admin\/services\//g' feeds/lu
 sed -i 's/admin\//admin\/services\//g' feeds/luci/applications/luci-app-dockerman/luasrc/view/dockerman/*.htm
 sed -i 's|admin\\|admin\\/services\\|g' feeds/luci/applications/luci-app-dockerman/luasrc/view/dockerman/container.htm
 
-# x86只显示CPU型号
-sed -i 's/${g}.*/${a}${b}${c}${d}${e}${f}${hydrid}/g' package/lean/autocore/files/x86/autocore
-
 ./scripts/feeds update -a
 ./scripts/feeds install -a
