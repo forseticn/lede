@@ -1,21 +1,21 @@
 name: Update Checker
 
 env:
-  REPOS:
+ REPOS:
     - { name: "lede", url: "https://github.com/coolsnowwolf/lede", branch: "master" }
     - { name: "immo", url: "https://github.com/immortalwrt/immortalwrt", branch: "master" }
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 20 * * 0'  # 每周日 UTC 20:00 运行（北京时间 4:00 AM）
+   - cron: '0 20 * * 0'  # 每周日 UTC 20:00 运行（北京时间 4:00 AM）
 
 jobs:
   check:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repo: 
+       repo: 
           - { name: "lede", url: "https://github.com/coolsnowwolf/lede", branch: "master" }
           - { name: "immo", url: "https://github.com/immortalwrt/immortalwrt", branch: "master" }
 
