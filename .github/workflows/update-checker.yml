@@ -18,9 +18,10 @@ jobs:
     steps:
       - name: Checkout Repo & Get Commit Hash
         run: |
-          git clone --depth 1 ${{ matrix.repo.url }} -b ${{ matrix.repo.branch }} repo
+          git clone --depth 50 ${{ matrix.repo.url }} -b ${{ matrix.repo.branch }} repo  # 增加深度，保留更多历史提交
           cd repo
-          latest_hash=$(git rev-parse HEAD)
+          git fetch origin ${{ matrix.repo.branch }}  # 获取最新的提交
+          latest_hash=$(git rev-parse origin/${{ matrix.repo.branch }})
           echo "commitHash=$latest_hash" >> $GITHUB_ENV
 
       - name: Restore Previous Commit Hash
