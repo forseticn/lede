@@ -25,13 +25,18 @@ jobs:
 
       - name: Restore Previous Commit Hash
         id: restore_hash
+        uses: actions/download-artifact@v4
+        with:
+          name: commit-hash-${{ matrix.repo.name }}
+          path: .
+
+      - name: Load Previous Hash
         run: |
           PREV_HASH_FILE=".commitHash-${{ matrix.repo.name }}"
           if [ -f "$PREV_HASH_FILE" ]; then
             prev_hash=$(cat "$PREV_HASH_FILE")
           else
             prev_hash="none"
-            echo "" > "$PREV_HASH_FILE"  # 确保文件存在，防止后续步骤报错
           fi
           echo "prevCommitHash=$prev_hash" >> $GITHUB_ENV
 
@@ -45,9 +50,11 @@ jobs:
           
           if [ "${{ env.prevCommitHash }}" != "${{ env.commitHash }}" ]; then
             echo "updated=true" >> $GITHUB_ENV
+            echo "updated=true" >> $GITHUB_OUTPUT
             echo "${{ env.commitHash }}" > "$PREV_HASH_FILE"
           else
             echo "updated=false" >> $GITHUB_ENV
+            echo "updated=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Upload Latest Commit Hash
@@ -56,11 +63,11 @@ jobs:
         with:
           name: commit-hash-${{ matrix.repo.name }}
           path: .commitHash-${{ matrix.repo.name }}
-          if-no-files-found: ignore  # 避免报错
+          if-no-files-found: ignore
           retention-days: 7
 
       - name: Trigger build for LEDE
-        if: env.updated == 'true' && matrix.repo.name == 'lede'
+        if: steps.check_change.outputs.updated == 'true' && matrix.repo.name == 'lede'
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
@@ -68,7 +75,7 @@ jobs:
           event-type: lede-update
 
       - name: Trigger build for IMMO
-        if: env.updated == 'true' && matrix.repo.name == 'immo'
+        if: steps.check_change.outputs.updated == 'true' && matrix.repo.name == 'immo'
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
@@ -76,7 +83,7 @@ jobs:
           event-type: immo-update
 
       - name: Trigger build for ISTORE
-        if: env.updated == 'true' && matrix.repo.name == 'istore'
+        if: steps.check_change.outputs.updated == 'true' && matrix.repo.name == 'istore'
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
