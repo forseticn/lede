@@ -50,6 +50,13 @@ jobs:
         haskell: true
         large-packages: true
         swap-storage: true
+
+    - name: Cache build actions 缓存构建动作
+      uses: klever1988/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        mixkey: ubuntu-22.04-${{ env.REPO_BRANCH }}
+        prefix: /workdir/openwrt
     
     - name: Clone source code 克隆源代码
       working-directory: /workdir
