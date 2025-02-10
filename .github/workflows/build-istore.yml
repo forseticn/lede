@@ -7,7 +7,7 @@ on:
 
 env:
   REPO_URL: https://github.com/istoreos/istoreos
-  REPO_BRANCH: master
+  REPO_BRANCH: istoreos-22.03
   # FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: istore.config
   DIY_SH: istore.sh
