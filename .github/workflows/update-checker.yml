@@ -13,6 +13,7 @@ jobs:
         repo:
           - { name: "lede", url: "https://github.com/coolsnowwolf/lede", branch: "master" }
           - { name: "immo", url: "https://github.com/immortalwrt/immortalwrt", branch: "master" }
+          - { name: "immo", url: "https://github.com/istoreos/istoreos", branch: "istoreos-22.03" }
 
     steps:
       - name: Checkout Repo & Get Commit Hash
@@ -53,6 +54,13 @@ jobs:
         with:
           token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
           event-type: immo-update
+
+      - name: Trigger build for ISTORE
+        if: env.updated == 'true' && matrix.repo.name == 'istore'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
+          event-type: istore-update
 
       - name: Delete Old Workflows
         uses: Mattraks/delete-workflow-runs@v2
