@@ -23,14 +23,22 @@ jobs:
           latest_hash=$(git rev-parse HEAD)
           echo "commitHash=$latest_hash" >> $GITHUB_ENV
 
-      - name: Restore Previous Commit Hash
-        id: restore_hash
+      - name: Upload Latest Commit Hash
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: commit-hash-${{ matrix.repo.name }}
+          path: .commitHash-${{ matrix.repo.name }}
+          retention-days: 7
+
+      - name: Download Previous Commit Hash
         uses: actions/download-artifact@v4
         with:
           name: commit-hash-${{ matrix.repo.name }}
           path: .
 
-      - name: Load Previous Hash
+      - name: Compare with Previous Commit Hash
+        id: check_change
         run: |
           PREV_HASH_FILE=".commitHash-${{ matrix.repo.name }}"
           if [ -f "$PREV_HASH_FILE" ]; then
@@ -40,31 +48,12 @@ jobs:
           fi
           echo "prevCommitHash=$prev_hash" >> $GITHUB_ENV
 
-      - name: Compare with Previous Commit Hash
-        id: check_change
-        run: |
-          PREV_HASH_FILE=".commitHash-${{ matrix.repo.name }}"
-          
-          echo "Previous hash: ${{ env.prevCommitHash }}"
-          echo "New hash: ${{ env.commitHash }}"
-          
           if [ "${{ env.prevCommitHash }}" != "${{ env.commitHash }}" ]; then
             echo "updated=true" >> $GITHUB_ENV
-            echo "updated=true" >> $GITHUB_OUTPUT
             echo "${{ env.commitHash }}" > "$PREV_HASH_FILE"
           else
             echo "updated=false" >> $GITHUB_ENV
-            echo "updated=false" >> $GITHUB_OUTPUT
           fi
-
-      - name: Upload Latest Commit Hash
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: commit-hash-${{ matrix.repo.name }}
-          path: .commitHash-${{ matrix.repo.name }}
-          if-no-files-found: ignore
-          retention-days: 7
 
       - name: Trigger build for LEDE
         if: steps.check_change.outputs.updated == 'true' && matrix.repo.name == 'lede'
