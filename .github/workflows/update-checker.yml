@@ -23,61 +23,44 @@ jobs:
           latest_hash=$(git rev-parse HEAD)
           echo "commitHash=$latest_hash" >> $GITHUB_ENV
 
-      - name: Upload Latest Commit Hash
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: commit-hash-${{ matrix.repo.name }}
-          path: .commitHash-${{ matrix.repo.name }}
-          retention-days: 7
-
-      - name: Download Previous Commit Hash
-        uses: actions/download-artifact@v4
-        with:
-          name: commit-hash-${{ matrix.repo.name }}
-          path: .
-
-      - name: Compare with Previous Commit Hash
-        id: check_change
+      - name: Restore Previous Commit Hash
         run: |
           PREV_HASH_FILE=".commitHash-${{ matrix.repo.name }}"
-          if [ -f "$PREV_HASH_FILE" ]; then
-            prev_hash=$(cat "$PREV_HASH_FILE")
-          else
-            prev_hash="none"
-          fi
+          touch "$PREV_HASH_FILE"
+          prev_hash=$(cat "$PREV_HASH_FILE" || echo "none")
           echo "prevCommitHash=$prev_hash" >> $GITHUB_ENV
 
-          if [ "${{ env.prevCommitHash }}" != "${{ env.commitHash }}" ]; then
+      - name: Compare with Previous Commit Hash
+        run: |
+          PREV_HASH_FILE=".commitHash-${{ matrix.repo.name }}"
+          touch "$PREV_HASH_FILE"
+
+          echo "Previous hash: $(cat "$PREV_HASH_FILE")"
+          echo "New hash: ${{ env.commitHash }}"
+          
+          if [ "$(cat "$PREV_HASH_FILE")" != "${{ env.commitHash }}" ]; then
             echo "updated=true" >> $GITHUB_ENV
             echo "${{ env.commitHash }}" > "$PREV_HASH_FILE"
           else
             echo "updated=false" >> $GITHUB_ENV
           fi
 
-      - name: Trigger build for LEDE
-        if: steps.check_change.outputs.updated == 'true' && matrix.repo.name == 'lede'
-        uses: peter-evans/repository-dispatch@v3
+      - name: Upload Latest Commit Hash
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
-          repository: ${{ github.repository }}
-          event-type: lede-update
+          name: commit-hash-${{ matrix.repo.name }}
+          path: .commitHash-${{ matrix.repo.name }}
+          if-no-files-found: error
+          retention-days: 7
 
-      - name: Trigger build for IMMO
-        if: steps.check_change.outputs.updated == 'true' && matrix.repo.name == 'immo'
+      - name: Trigger build
+        if: env(updated) == 'true'
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
           repository: ${{ github.repository }}
-          event-type: immo-update
-
-      - name: Trigger build for ISTORE
-        if: steps.check_change.outputs.updated == 'true' && matrix.repo.name == 'istore'
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
-          repository: ${{ github.repository }}
-          event-type: istore-update
+          event-type: ${{ matrix.repo.name }}-update
 
       - name: Delete Old Workflows
         uses: Mattraks/delete-workflow-runs@v2
@@ -85,4 +68,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           retain_days: 7
-          keep_minimum_runs: 7
