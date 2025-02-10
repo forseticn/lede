@@ -21,7 +21,7 @@ jobs:
 
     steps:
     - name: Checkout 检出
-      uses: actions/checkout@main
+      uses: actions/checkout@v4
 
     - name: Initialization environment 初始化环境
       env:
