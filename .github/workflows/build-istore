@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
 
 env:
-  REPO_URL: https://github.com/istorertalwrt/istorertalwrt
+  REPO_URL: https://github.com/istoreos/istoreos
   REPO_BRANCH: master
-  FEEDS_CONF: feeds.conf.default
+  # FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: istore.config
   DIY_SH: istore.sh
   UPLOAD_FIRMWARE: true
