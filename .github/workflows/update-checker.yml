@@ -31,6 +31,7 @@ jobs:
             prev_hash=$(cat "$PREV_HASH_FILE")
           else
             prev_hash="none"
+            echo "" > "$PREV_HASH_FILE"  # 确保文件存在，防止后续步骤报错
           fi
           echo "prevCommitHash=$prev_hash" >> $GITHUB_ENV
 
@@ -38,33 +39,25 @@ jobs:
         id: check_change
         run: |
           PREV_HASH_FILE=".commitHash-${{ matrix.repo.name }}"
-          touch "$PREV_HASH_FILE"  # 先创建空文件，避免上传时报错
           
-          if [ -f "$PREV_HASH_FILE" ]; then
-            prev_hash=$(cat "$PREV_HASH_FILE")
-          else
-            prev_hash="none"
-          fi
-          
-          echo "Previous hash: $prev_hash"
+          echo "Previous hash: ${{ env.prevCommitHash }}"
           echo "New hash: ${{ env.commitHash }}"
           
-          if [ "$prev_hash" != "${{ env.commitHash }}" ]; then
+          if [ "${{ env.prevCommitHash }}" != "${{ env.commitHash }}" ]; then
             echo "updated=true" >> $GITHUB_ENV
             echo "${{ env.commitHash }}" > "$PREV_HASH_FILE"
           else
             echo "updated=false" >> $GITHUB_ENV
           fi
 
-
       - name: Upload Latest Commit Hash
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: commit-hash-${{ matrix.repo.name }}
           path: .commitHash-${{ matrix.repo.name }}
-          if-no-files-found: warn  # 避免报错
+          if-no-files-found: ignore  # 避免报错
           retention-days: 7
-
 
       - name: Trigger build for LEDE
         if: env.updated == 'true' && matrix.repo.name == 'lede'
