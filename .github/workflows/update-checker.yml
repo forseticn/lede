@@ -13,7 +13,7 @@ jobs:
         repo:
           - { name: "lede", url: "https://github.com/coolsnowwolf/lede", branch: "master" }
           - { name: "immo", url: "https://github.com/immortalwrt/immortalwrt", branch: "master" }
-          - { name: "immo", url: "https://github.com/istoreos/istoreos", branch: "istoreos-22.03" }
+          - { name: "istore", url: "https://github.com/istoreos/istoreos", branch: "istoreos-22.03" }
 
     steps:
       - name: Checkout Repo & Get Commit Hash
