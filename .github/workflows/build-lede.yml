@@ -36,13 +36,6 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
-
-    - name: Cache build actions 缓存构建动作
-      uses: klever1988/cachewrtbuild@main
-      with:
-        ccache: 'true'
-        mixkey: ubuntu-22.04-${{ env.REPO_BRANCH }}
-        prefix: /workdir/openwrt
     
     - name: Free Disk Space 释放磁盘空间
       uses: jlumbroso/free-disk-space@main
@@ -68,6 +61,13 @@ jobs:
         echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
+    - name: Cache build actions 缓存构建动作
+      uses: klever1988/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        mixkey: ubuntu-22.04-${{ env.REPO_BRANCH }}
+        prefix: /workdir/openwrt
+    
     - name: Update & Install feeds 更新并安装源
       working-directory: ./openwrt
       run: |
