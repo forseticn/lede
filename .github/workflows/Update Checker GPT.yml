@@ -1,17 +1,16 @@
-name: Update Checker GPT
+name: Update Checker
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 20 * * 0'  # 每周日 UTC 20:00 运行
+    - cron: '0 20 * * 0'
 
 jobs:
   check:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        repo:
+        repo: 
           - { name: "ImmortalWRT", url: "https://github.com/immortalwrt/immortalwrt", branch: "master" }
           - { name: "IStoreOS", url: "https://github.com/istoreos/istoreos", branch: "main" }
           - { name: "LEDE", url: "https://github.com/coolsnowwolf/lede", branch: "master" }
@@ -19,35 +18,48 @@ jobs:
     steps:
     - name: Checkout repository
       run: |
-        echo "Checking updates for repository: ${{ matrix.repo.name }}"
-        git clone --depth 1 ${{ matrix.repo.url }} -b ${{ matrix.repo.branch }} .
-
-    - name: Get Commit Hash
-      id: getHash
-      run: |
+        echo "Checking updates for ${{ matrix.repo.name }}"
+        git clone --depth 1 ${{ matrix.repo.url }} -b ${{ matrix.repo.branch }} repo
+        cd repo
         commitHash=$(git rev-parse HEAD)
         echo "commitHash=$commitHash" >> $GITHUB_ENV
-        echo "commitHash=$commitHash" >> $GITHUB_OUTPUT
+
+    - name: Download Previous Commit Hash
+      id: download
+      uses: actions/cache@v3
+      with:
+        path: .commitHash_${{ matrix.repo.name }}
+        key: commitHash-${{ matrix.repo.name }}
 
     - name: Check Previous Commit Hash
-      id: checkPrevious
+      id: check
       run: |
-        if [ -f .commitHash ]; then
-          oldHash=$(cat .commitHash)
-          echo "oldHash=$oldHash" >> $GITHUB_ENV
+        if [ -f .commitHash_${{ matrix.repo.name }} ]; then
+          oldHash=$(cat .commitHash_${{ matrix.repo.name }})
+          echo "oldHash=$oldHash"
+        else
+          oldHash=""
         fi
+        echo "oldHash=$oldHash" >> $GITHUB_ENV
 
-    - name: Compare and Save Commit Hash
-      id: saveNewHash
+    - name: Compare and Save New Commit Hash
+      id: compare
       run: |
-        if [ "$oldHash" != "${{ steps.getHash.outputs.commitHash }}" ]; then
-          echo "New commit detected for ${{ matrix.repo.name }}!"
-          echo "${{ steps.getHash.outputs.commitHash }}" > .commitHash
+        if [ "$oldHash" != "$commitHash" ]; then
+          echo "New commit detected for ${{ matrix.repo.name }}"
+          echo $commitHash > .commitHash_${{ matrix.repo.name }}
           echo "updated=true" >> $GITHUB_ENV
         else
-          echo "No updates for ${{ matrix.repo.name }}."
+          echo "No updates for ${{ matrix.repo.name }}"
           echo "updated=false" >> $GITHUB_ENV
         fi
+
+    - name: Upload New Commit Hash
+      if: env.updated == 'true'
+      uses: actions/cache@v3
+      with:
+        path: .commitHash_${{ matrix.repo.name }}
+        key: commitHash-${{ matrix.repo.name }}
 
     - name: Trigger build
       if: env.updated == 'true'
