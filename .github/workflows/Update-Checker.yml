@@ -12,7 +12,7 @@ jobs:
       matrix:
         repo: 
           - { name: "ImmortalWRT", url: "https://github.com/immortalwrt/immortalwrt", branch: "master", event: "update-immortalwrt" }
-          - { name: "IStoreOS", url: "https://github.com/istoreos/istoreos", branch: "main", event: "update-istoreos" }
+          - { name: "IStoreOS", url: "https://github.com/istoreos/istoreos", branch: "istoreos-22.03", event: "update-istoreos" }
           - { name: "LEDE", url: "https://github.com/coolsnowwolf/lede", branch: "master", event: "update-lede" }
 
     steps:
