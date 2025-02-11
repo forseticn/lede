@@ -2,7 +2,7 @@ name: Build Immo
 
 on:
   repository_dispatch:
-    types: [immo-update]
+   # types: [immo-update]
   workflow_dispatch:
 
 env:
