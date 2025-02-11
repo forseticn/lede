@@ -17,6 +17,18 @@ git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 echo "sed -i 's/listen 127.0.0.1:80;/listen 0.0.0.0:80;/g' /etc/nginx/conf.d/luci.conf" >> package/base-files/files/etc/rc.local
 echo "service nginx restart" >> package/base-files/files/etc/rc.local
 
+# 设置静态 IP 地址为 10.0.0.3
+uci set network.lan.ipaddr='10.0.0.3'
+uci set network.lan.netmask='255.255.255.0'
+uci set network.lan.gateway='10.0.0.1'
+
+# 关闭 DHCP 客户端
+uci set network.lan.proto='static'  # 使用静态 IP
+uci set network.lan.dhcp='0'        # 禁用 DHCP
+
+# 保存配置
+uci commit network
+
 
 # 调整 Docker 到 服务 菜单
 # sed -i 's/"admin"/"admin", "services"/g' feeds/luci/applications/luci-app-dockerman/luasrc/controller/*.lua
