@@ -1,4 +1,4 @@
-name: Update Checker
+name: Update Checker GPT
 
 on:
   workflow_dispatch:
