@@ -13,6 +13,10 @@ find ./ | grep Makefile | grep mosdns | xargs rm -f
 git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 
+# 允许WAN口访问Luci Web界面
+sed -i 's/option rfc1918_filter.*/option rfc1918_filter '\''0'\''/' package/network/services/uhttpd/files/uhttpd.config
+echo "/etc/init.d/uhttpd restart" >> package/base-files/files/etc/rc.local
+
 
 # 调整 Docker 到 服务 菜单
 # sed -i 's/"admin"/"admin", "services"/g' feeds/luci/applications/luci-app-dockerman/luasrc/controller/*.lua
