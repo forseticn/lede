@@ -2,13 +2,13 @@ name: Build Lede
 
 on:
   repository_dispatch:
-    types: [lede-update]
+    # types: [lede-update]
   workflow_dispatch:
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  FEEDS_CONF: feeds.conf.default
+   # FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: lede.config
   DIY_SH: lede.sh
   UPLOAD_FIRMWARE: true
