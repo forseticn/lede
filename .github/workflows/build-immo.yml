@@ -8,7 +8,7 @@ on:
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: master
-  FEEDS_CONF: feeds.conf.default
+   # FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: immo.config
   DIY_SH: immo.sh
   UPLOAD_FIRMWARE: true
