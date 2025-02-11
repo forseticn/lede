@@ -14,8 +14,8 @@ git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 
 # 允许WAN口访问Luci Web界面
-sed -i 's/option rfc1918_filter.*/option rfc1918_filter '\''0'\''/' package/network/services/uhttpd/files/uhttpd.config
-echo "/etc/init.d/uhttpd restart" >> package/base-files/files/etc/rc.local
+echo "sed -i 's/listen 127.0.0.1:80;/listen 0.0.0.0:80;/g' /etc/nginx/conf.d/luci.conf" >> package/base-files/files/etc/rc.local
+echo "service nginx restart" >> package/base-files/files/etc/rc.local
 
 
 # 调整 Docker 到 服务 菜单
