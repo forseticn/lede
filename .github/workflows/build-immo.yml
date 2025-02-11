@@ -120,7 +120,7 @@ jobs:
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        RELEASE_TAG=$(date +"%Y.%m.%d-%H%M")
+        RELEASE_TAG="Immortalwrt-$(date +"%Y.%m.%d-%H%M")"
         echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
         touch release.txt
         echo "status=success" >> $GITHUB_OUTPUT
