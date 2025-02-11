@@ -2,7 +2,7 @@ name: Build iStore
 
 on:
   repository_dispatch:
-    types: [istore-update]
+   # types: [istore-update]
   workflow_dispatch:
 
 env:
