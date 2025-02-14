@@ -9,8 +9,8 @@ env:
   REPO_URL: https://github.com/istoreos/istoreos
   REPO_BRANCH: istoreos-22.03
   # FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: istore.config
-  DIY_SH: istore.sh
+  CONFIG_FILE: config/istore.config
+  DIY_SH: diy/istore.sh
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
