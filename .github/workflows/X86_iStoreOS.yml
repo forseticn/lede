@@ -1,4 +1,4 @@
-name: X86_iStoreOS
+name: X86_64_iStoreOS
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
 env:
   REPO_URL: https://github.com/zijieKwok/istoreos.git
   REPO_BRANCH: istoreos-24.10
-  CONFIG_FILE: x86_86_iStoreOS.config
-  DIY_SCRIPT: diy-istoreos.sh
+  CONFIG_FILE: config/x86_86_iStoreOS.config
+  DIY_SCRIPT: diy/diy-istoreos.sh
   CLASH_KERNEL: amd64
   CACHE_TOOLCHAIN: true
   UPLOAD_BIN_DIR: false
   FIRMWARE_RELEASE: true
-  FIRMWARE_TAG: X86_iStoreOS
+  FIRMWARE_TAG: X86_64_iStoreOS
   TZ: Asia/Shanghai
 
 jobs:
