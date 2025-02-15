@@ -17,5 +17,9 @@ git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 # sed -i 's/admin\//admin\/services\//g' feeds/luci/applications/luci-app-dockerman/luasrc/view/dockerman/*.htm
 # sed -i 's|admin\\|admin\\/services\\|g' feeds/luci/applications/luci-app-dockerman/luasrc/view/dockerman/container.htm
 
+# 默认wan口防火墙打开
+uci set firewall.@zone[1].input='ACCEPT'
+uci commit firewall
+
 ./scripts/feeds update -a
 ./scripts/feeds install -a
