@@ -3,14 +3,7 @@
 # 修改默认IP
 sed -i 's/192.168.100.1/10.0.0.3/g' package/istoreos-files/Makefile
 
-# TTYD
-sed -i 's/services/system/g' feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json
-# sed -i '3 a\\t\t"order": 50,' feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json
-# sed -i 's/procd_set_param stdout 1/procd_set_param stdout 0/g' feeds/packages/utils/ttyd/files/ttyd.init
-# sed -i 's/procd_set_param stderr 1/procd_set_param stderr 0/g' feeds/packages/utils/ttyd/files/ttyd.init
 
-# 修改默认密码
-# sed -i 's/root:::0:99999:7:::/root:$1$5mjCdAB1$Uk1sNbwoqfHxUmzRIeuZK1:0:0:99999:7:::/g' package/base-files/files/etc/shadow
 
 # default-settings
 git clone --depth=1 -b openwrt-24.10 https://github.com/Jaykwok2999/default-settings package/default-settings
@@ -35,9 +28,6 @@ sed -i 's/services/nas/g' feeds/istoreos_ipk/op-fileBrowser/luci-app-filebrowser
 # 修改socat为端口转发
 sed -i 's/msgstr "Socat"/msgstr "端口转发"/g' feeds/third_party/luci-app-socat/po/zh-cn/socat.po
 
-##加入作者信息
-sed -i "s/DISTRIB_DESCRIPTION='*.*'/DISTRIB_DESCRIPTION='iStoreOS-$(date +%Y%m%d)'/g"  package/base-files/files/etc/openwrt_release
-sed -i "s/DISTRIB_REVISION='*.*'/DISTRIB_REVISION=' By JayKwok'/g" package/base-files/files/etc/openwrt_release
 
 # 移除要替换的包
 rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box,adguardhome}
@@ -87,8 +77,6 @@ rm -rf feeds/{packages/net/miniupnpd,luci/applications/luci-app-upnp}
 git clone https://git.kejizero.online/zhao/miniupnpd feeds/packages/net/miniupnpd -b v2.3.7
 git clone https://git.kejizero.online/zhao/luci-app-upnp feeds/luci/applications/luci-app-upnp -b master
 
-# Lucky
-# git clone https://github.com/gdy666/luci-app-lucky.git package/lucky
 
 # luci-app-webdav
 git clone https://git.kejizero.online/zhao/luci-app-webdav package/new/luci-app-webdav
@@ -113,19 +101,12 @@ sed -i 's/1.openwrt.pool.ntp.org/ntp2.aliyun.com/g' package/base-files/files/bin
 sed -i 's/2.openwrt.pool.ntp.org/time1.cloud.tencent.com/g' package/base-files/files/bin/config_generate
 sed -i 's/3.openwrt.pool.ntp.org/time2.cloud.tencent.com/g' package/base-files/files/bin/config_generate
 
-# 更改 banner
-rm -rf package/base-files/files/etc/banner
-cp -af feeds/istoreos_ipk/patch/diy/banner package/base-files/files/etc/
-
 # tailscale
 # rm -rf feeds/packages/net/tailscale
 rm -rf feeds/istoreos_ipk/tailscale/tailscale
 # cp -af feeds/istoreos_ipk/tailscale/tailscale  feeds/packages/net/
 sed -i '/\/etc\/init\.d\/tailscale/d;/\/etc\/config\/tailscale/d;' feeds/packages/net/tailscale/Makefile
 
-# 增加驱动补丁
-# cp -af feeds/istoreos_ipk/patch/diy/patches-6.6/993-bnx2x_warpcore_8727_2_5g_sgmii_txfault.patch target/linux/x86/patches-6.6/
-# cp -af feeds/istoreos_ipk/patch/diy/patches-6.6/996-intel-igc-i225-i226-disable-eee.patch target/linux/x86/patches-6.6/
 
 ./scripts/feeds update -a
 ./scripts/feeds install -a
