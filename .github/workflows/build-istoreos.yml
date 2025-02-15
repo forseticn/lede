@@ -6,11 +6,11 @@ on:
   workflow_dispatch:
 
 env:
-  REPO_URL: https://github.com/istoreos/istoreos
-  REPO_BRANCH: istoreos-22.03
+  REPO_URL: https://github.com/zijieKwok/istoreos.git
+  REPO_BRANCH: istoreos-24.10
   # FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: config/istore.config
-  DIY_SH: diy/istore.sh
+  CONFIG_FILE: config/istoreos.config
+  DIY_SH: diy/istoreos.sh
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
