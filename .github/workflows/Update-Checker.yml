@@ -11,8 +11,8 @@ jobs:
     strategy:
       matrix:
         repo: 
-          - { name: "ImmortalWRT", url: "https://github.com/immortalwrt/immortalwrt", branch: "master", event: "update-immortalwrt" }
-          - { name: "LEDE", url: "https://github.com/coolsnowwolf/lede", branch: "master", event: "update-lede" }
+          - { name: "ImmortalWRT", url: "https://github.com/immortalwrt/immortalwrt", branch: "master", event: "Update-Immortalwrt" }
+          - { name: "LEDE", url: "https://github.com/coolsnowwolf/lede", branch: "master", event: "Update-Lede" }
 
     steps:
     - name: Checkout repository
