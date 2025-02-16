@@ -133,7 +133,7 @@ jobs:
         echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
         touch release.txt
         echo "status=success" >> $GITHUB_OUTPUT
-        echo "源码仓库: https://github.com/istoreos/istoreos" >> release.txt
+        echo "源码仓库: 1111111" >> release.txt
         echo "内核版本: ${{ env.KERNEL }}" >> release.txt
         echo "${COMMIT_MESSAGE}" >> release.txt
 
