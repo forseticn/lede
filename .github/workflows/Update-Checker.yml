@@ -12,7 +12,6 @@ jobs:
       matrix:
         repo: 
           - { name: "ImmortalWRT", url: "https://github.com/immortalwrt/immortalwrt", branch: "master", event: "update-immortalwrt" }
-          - { name: "IStoreOS", url: "istoreos-24.10", branch: "istoreos-24.10", event: "update-istoreos" }
           - { name: "LEDE", url: "https://github.com/coolsnowwolf/lede", branch: "master", event: "update-lede" }
 
     steps:
@@ -67,7 +66,6 @@ jobs:
       with:
         token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
         event-type: "${{ matrix.repo.event }}"
-
 
     - name: Delete Old Workflows
       uses: Mattraks/delete-workflow-runs@main
