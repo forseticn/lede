@@ -1,7 +1,8 @@
-name: OpenWrt Builder
+name: Build Lede
 
 on:
   repository_dispatch:
+   types: [update-lede]
   workflow_dispatch:
 
 env:
