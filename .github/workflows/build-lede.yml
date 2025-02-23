@@ -2,7 +2,7 @@ name: Build Lede
 
 on:
   repository_dispatch:
-    # types: [update-lede]
+    types: [lede-source-code-update]
   workflow_dispatch:
 
 env:
