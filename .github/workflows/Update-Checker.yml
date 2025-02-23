@@ -39,19 +39,4 @@ jobs:
 
       - name: Trigger build
         if: steps.cacheHash.outputs.cache-hit != 'true'
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
-          event-type: ${{ matrix.repo.event }}
-          repository: ${{ github.repository }}
-          workflow: build-${{ matrix.repo.name | toLowerCase }}.yml
-
-  delete_old_workflows:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Delete Old Workflows
-        uses: Mattraks/delete-workflow-runs@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          retain_days: 3
-          keep_minimum_runs: 3
+        uses: peter-evans/reposito
