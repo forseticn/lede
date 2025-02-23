@@ -1,4 +1,4 @@
-name: Update Checker - Both Repos
+name: Update Checker
 
 env:
   IMMORTALWRT_REPO_URL: https://github.com/immortalwrt/immortalwrt
