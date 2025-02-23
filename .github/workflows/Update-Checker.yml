@@ -1,4 +1,4 @@
-name: Multi-Repo Update Checker
+name: Update Checker
 
 env:
   IMMORTALWRT_REPO_URL: https://github.com/immortalwrt/immortalwrt
@@ -9,8 +9,7 @@ env:
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 20 * * 0' # 每周日晚上 8 点（UTC 时间）触发
-
+    - cron: '0 11 * * 0'
 jobs:
   check-immortalwrt:
     runs-on: ubuntu-latest
