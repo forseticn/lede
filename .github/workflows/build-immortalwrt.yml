@@ -2,7 +2,7 @@ name: Build Immortalwrt
 
 on:
   repository_dispatch:
-   types: [update-immortalwrt]
+    # types: [update-immortalwrt]
   workflow_dispatch:
 
 env:
