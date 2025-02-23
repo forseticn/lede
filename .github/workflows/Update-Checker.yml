@@ -8,7 +8,7 @@ env:
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 20 * * 0'  # 每周日20:00自动运行
+    - cron: '0 20 * * 0'
 
 jobs:
   check:
