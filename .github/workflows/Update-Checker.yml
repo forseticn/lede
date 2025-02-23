@@ -28,7 +28,9 @@ jobs:
       uses: actions/cache@v3
       with:
         path: .commitHash_${{ matrix.repo.name }}
-        key: commitHash-${{ matrix.repo.name }}
+        key: commitHash-${{ matrix.repo.name }}-${{ github.run_id }}
+        restore-keys: |
+          commitHash-${{ matrix.repo.name }}-
 
     - name: Check Previous Commit Hash
       id: check
@@ -44,7 +46,7 @@ jobs:
     - name: Compare and Save New Commit Hash
       id: compare
       run: |
-        if [ "$oldHash" != "$commitHash" ]; then
+        if [ -z "$oldHash" ] || [ "$oldHash" != "$commitHash" ]; then
           echo "New commit detected for ${{ matrix.repo.name }}"
           echo $commitHash > .commitHash_${{ matrix.repo.name }}
           echo "updated=true" >> $GITHUB_ENV
@@ -58,13 +60,14 @@ jobs:
       uses: actions/cache@v3
       with:
         path: .commitHash_${{ matrix.repo.name }}
-        key: commitHash-${{ matrix.repo.name }}
+        key: commitHash-${{ matrix.repo.name }}-${{ github.run_id }}
 
     - name: Trigger build
       if: env.updated == 'true'
       uses: peter-evans/repository-dispatch@main
       with:
         token: ${{ secrets.ACTIONS_TRIGGER_PAT }}
+        repository: ${{ github.repository }}
         event-type: "${{ matrix.repo.event }}"
 
     - name: Delete Old Workflows
