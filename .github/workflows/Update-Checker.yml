@@ -35,6 +35,7 @@ jobs:
         if: steps.cacheHash.outputs.cache-hit != 'true'
         run: |
           echo ${{ env.commitHash }} | tee .commitHash
+          echo "New commit hash saved: ${{ env.commitHash }}"
 
       - name: Trigger build
         if: steps.cacheHash.outputs.cache-hit != 'true'
